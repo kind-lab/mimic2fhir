@@ -85,10 +85,10 @@ public class FHIRComm {
 			
 			String fullFilePath;
 			if(!number.equals("0")) {
-				fullFilePath = configuration.getFhirxmlFilePath() + "\\bundle" + number + ".xml";
+				fullFilePath = configuration.getFhirxmlFilePath() + "bundle" + number + ".xml";
 			}
 			else{
-				fullFilePath = configuration.getFhirxmlFilePath() + "\\bundle.xml";
+				fullFilePath = configuration.getFhirxmlFilePath() + "bundle.xml";
 			}
 			
 			Path path = Paths.get(fullFilePath);
@@ -119,7 +119,7 @@ public class FHIRComm {
 	private void writeToFile(String text) {
 		try {
 			
-			String fullFilePath = configuration.getFhirxmlFilePath() + "\\log" + new Date().getTime() +".xml";
+			String fullFilePath = configuration.getFhirxmlFilePath() + "log" + new Date().getTime() +".xml";
 			
 			Path path = Paths.get(fullFilePath);
 		    byte[] strToBytes = text.getBytes();
