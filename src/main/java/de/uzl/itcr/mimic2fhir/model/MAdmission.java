@@ -46,6 +46,7 @@ public class MAdmission {
 		procedures = new ArrayList<MProcedure>();
 		events = new ArrayList<MChartevent>();
 		labevents = new ArrayList<MLabevent>();
+		microevents = new ArrayList<MMicrobiologyevent>();
 		noteevents = new ArrayList<MNoteevent>();
 		prescriptions = new ArrayList<MPrescription>();
 		transfers = new ArrayList<MTransfer>();
@@ -64,6 +65,7 @@ public class MAdmission {
 	
 	private List<MChartevent> events;
 	private List<MLabevent> labevents;
+	private List<MMicrobiologyevent> microevents;
 	private List<MNoteevent> noteevents;
 	
 	private List<MDiagnose> diagnoses;
@@ -116,6 +118,13 @@ public class MAdmission {
 	}
 	public void addLabEvent(MLabevent event) {
 		labevents.add(event);
+	}
+	
+	public List<MMicrobiologyevent> getMicrobiologyEvents() {
+		return microevents;
+	}
+	public void addMicrobiologyEvent(MMicrobiologyevent event) {
+		microevents.add(event);
 	}
 	
 	public List<MNoteevent> getNoteevents() {
@@ -346,6 +355,32 @@ public class MAdmission {
 		
 		for(MLabevent event : this.labevents) {
 			obs.add(event.getFhirObservation(patId, encId));
+		}
+		
+		return obs;
+	}
+	
+	/**
+	 * Create all FHIR-"Observation"s for this encounter (Microbiologyevent)
+	 * @param patId Patient-FHIR-Resource-Id
+	 * @param encId Encounter-FHIR-Resource-Id
+	 * @return List with all FHIR Observations
+	 */
+	public List<Observation> createFhirMicroOrgObservationsFromMimic(String patId, String encId){
+		List<Observation> obs = new ArrayList<Observation>();
+		
+		for(MMicrobiologyevent event : this.microevents) {
+			obs.add(event.getFhirObservationOrg(patId, encId));
+		}
+		
+		return obs;
+	}
+	
+	public List<Observation> createFhirMicroSuscObservationsFromMimic(String patId, String encId){
+		List<Observation> obs = new ArrayList<Observation>();
+		
+		for(MMicrobiologyevent event : this.microevents) {
+			obs.add(event.getFhirObservationSusc(patId, encId));
 		}
 		
 		return obs;

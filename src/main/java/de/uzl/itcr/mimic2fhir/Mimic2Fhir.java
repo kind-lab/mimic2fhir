@@ -196,6 +196,10 @@ public class Mimic2Fhir {
 			List<Observation> obs = admission.createFhirObservationsFromMimic(fhirPat.getId(), enc.getId());
 			//create Observation from Labevents
 			List<Observation> obsLab = admission.createFhirLabObservationsFromMimic(fhirPat.getId(), enc.getId());
+			//create Observation from Microbiologyevents
+			List<Observation> obsMicroOrg = admission.createFhirMicroOrgObservationsFromMimic(fhirPat.getId(), enc.getId());
+			//create Observation from Microbiologyevents
+			List<Observation> obsMicroSusc = admission.createFhirMicroSuscObservationsFromMimic(fhirPat.getId(), enc.getId());
 			//create Observation from Noteevents
 			List<Observation> obsNotes = admission.createFhirNoteObservationsFromMimic(fhirPat.getId(), enc.getId());
 
@@ -245,6 +249,20 @@ public class Mimic2Fhir {
 
 
 			for(Observation o : obsLab) {
+				//check if bundle is full
+				checkBundleLimit(patNumber, fhirPat, admission, enc, conditions, procedures);
+
+				bundleC.addResourceToBundle(o);
+			}
+			
+			for(Observation o : obsMicroOrg) {
+				//check if bundle is full
+				checkBundleLimit(patNumber, fhirPat, admission, enc, conditions, procedures);
+
+				bundleC.addResourceToBundle(o);
+			}
+			
+			for(Observation o : obsMicroSusc) {
 				//check if bundle is full
 				checkBundleLimit(patNumber, fhirPat, admission, enc, conditions, procedures);
 

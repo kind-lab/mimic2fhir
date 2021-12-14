@@ -27,6 +27,7 @@ import de.uzl.itcr.mimic2fhir.model.MCaregiver;
 import de.uzl.itcr.mimic2fhir.model.MChartevent;
 import de.uzl.itcr.mimic2fhir.model.MDiagnose;
 import de.uzl.itcr.mimic2fhir.model.MLabevent;
+import de.uzl.itcr.mimic2fhir.model.MMicrobiologyevent;
 import de.uzl.itcr.mimic2fhir.model.MNoteevent;
 import de.uzl.itcr.mimic2fhir.model.MPatient;
 import de.uzl.itcr.mimic2fhir.model.MPrescription;
@@ -192,6 +193,9 @@ public class ConnectDB {
 					//Labevents
 					getLabEvents(mAdm, pat.getPatientSubjectId());
 					
+					//Microbgiologyevents
+					getMicrobiologyEvents(mAdm, pat.getPatientSubjectId());
+					
 					//Noteevents
 					getNoteEvents(mAdm, pat.getPatientSubjectId());
 										
@@ -305,6 +309,45 @@ public class ConnectDB {
 					 }
 					 
 					 admission.addLabEvent(event);
+				 
+				 }
+			 }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void getMicrobiologyEvents(MAdmission admission, String patientSubjId) {
+		String query =  "SELECT SUBJECT_ID, HADM_ID, CHARTTIME, SPEC_ITEMID, ORG_ITEMID, ORG_NAME, AB_ITEMID, AB_NAME, INTERPRETATION " +
+						"FROM MICROBIOLOGYEVENTS " +
+						"WHERE SUBJECT_ID = " + patientSubjId + " AND HADM_ID= " + admission.getAdmissionId();
+		PreparedStatement statement;
+		try {
+			statement = connection.prepareStatement(query);
+			ResultSet rs = statement.executeQuery();
+
+			 while (rs.next()) { 
+				 //Value = null ausschließen -> kein Wert
+				 if(rs.getObject(4) != null) {
+				 
+					 MMicrobiologyevent event = new MMicrobiologyevent();
+					 
+					 event.setChartTime(rs.getDate(3));		
+					 
+					 event.setSpecItemId(rs.getInt(4));	
+					 
+					 event.setOrgItemId(rs.getInt(5));	
+					 
+					 event.setOrgName(rs.getString(6));	
+					 
+					 event.setAbItemId(rs.getInt(7));	
+					 
+					 event.setaAbName(rs.getString(8));		
+					 
+					 event.setInterpretation(rs.getString(9));					
+					 
+					 admission.addMicrobiologyEvent(event);
 				 
 				 }
 			 }
