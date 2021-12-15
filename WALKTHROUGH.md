@@ -80,27 +80,26 @@ Now its time to create those FHIR resources from MIMIC!
 Using the main class Main.java, we can create an example with 10 patient bundles. This example is based directly on the main mimic2fhir documentation:
 ```java
 public static void main(String[] args) {
-		Config configuration = new Config();
+	Config configuration = new Config();
 		
-		//Postgres
-		configuration.setPassPostgres("postgres");
-		configuration.setPortPostgres("5432");
-		configuration.setUserPostgres("postgres");
+	//Postgres
+	configuration.setPassPostgres("postgres");
+	configuration.setPortPostgres("5432");
+	configuration.setUserPostgres("postgres");
     	configuration.setPostgresServer("localhost");
     	configuration.setDbnamePostgres("mimic");
     	configuration.setSchemaPostgres("mimiciii");
     	
     	//FHIR
     	configuration.setFhirServer("http://localhost:8080/fhir");
-		configuration.setFhirxmlFilePath("/MIMIC_Output/");
+	configuration.setFhirxmlFilePath("/MIMIC_Output/");
 		
-		//App configuration
-		Mimic2Fhir app = new Mimic2Fhir();
-		app.setConfig(configuration);
-		app.setOutputMode(OutputMode.PRINT_FILE);
-		app.setTopPatients(10);
-		app.start();	
-		 
+	//App configuration
+	Mimic2Fhir app = new Mimic2Fhir();
+	app.setConfig(configuration);
+	app.setOutputMode(OutputMode.PRINT_FILE);
+	app.setTopPatients(10);
+	app.start();			 
        
     }
 ```
