@@ -4,7 +4,7 @@ In this walkthrough we will accomplish the following:
 2. Set up a local HAPI FHIR Server
 3. Connect to a local Postgres DB
 4. Test connections directly in mimic2fhir
-5. Create 10 patient bundles
+5. Create 10 FHIR bundles
 
 ## 1. Local RabbitMQ Server
 The RabbitMQ server is used to set up a queue for jobs getting sent to the FHIR Server. To set up locally:
@@ -12,7 +12,8 @@ The RabbitMQ server is used to set up a queue for jobs getting sent to the FHIR 
     - Linux: `sudo apt install docker.io` or [Ubuntu Docker Guide](https://docs.docker.com/engine/install/ubuntu/)
     - Windows: [Windows Docker Guide](https://docs.docker.com/desktop/windows/install/)
     - Mac: `brew cask install docker` or [Mac Docker Guide](https://docs.docker.com/desktop/mac/install/)
-2. Start RabbitMQ server by running the docker command: `docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management`
+2. Start RabbitMQ server from the command line by running the docker command: 
+    - `docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management`
 
 ## 2. Local HAPI FHIR Server
 The HAPI FHIR server is used to process the FHIR resources and bundles. To set up locally:
@@ -20,7 +21,7 @@ The HAPI FHIR server is used to process the FHIR resources and bundles. To set u
 2. Update the src/main/resources/application.yaml from R4 to DSTU3:
     - Hapi:fhir:version --> DSTU3
     - Hapi:fhir:tester:home:fhir_version --> DSTU3
-3. Start the HAPIi FHIR server by running: `mvn jetty:run`
+3. Start the HAPI FHIR server from the command line by running: `mvn jetty:run`
 
 ### 2.1 Customize HAPI FHIR Server
 The HAPI FHIR server can be customized in a couple ways:
@@ -41,7 +42,7 @@ The HAPI FHIR server can be customized in a couple ways:
     - Update the src/main/resources/application.yaml
         - Hapi:fhir:version
         - Hapi:fhir:tester:home:fhir_version
-        - Example yaml for R4:
+        - Example yaml section for R4:
         ```yaml
           hapi:
             fhir:
@@ -74,7 +75,7 @@ A couple JUnit tests have been added to validate the connectivitiy of the server
 
 Tests are stored in src/test/java and the only file currently is ConnectionTest.java
 
-## 5. Create 10 patient bundles
+## 5. Create 10 FHIR bundles
 Now its time to create those FHIR resources from MIMIC!
 
 Using the main class Main.java, we can create an example with 10 patient bundles. This example is based directly on the main mimic2fhir documentation:
@@ -106,4 +107,4 @@ public static void main(String[] args) {
 
 Running this locally will take around 10-15 minutes. The patient bundles will be exported as XML files. 
 
-At this point we have a working local version of mimic2fhir. You are now free to set FHIR to MIMIC!
+At this point you have a working local version of mimic2fhir. You are now free to set FHIR to MIMIC!
